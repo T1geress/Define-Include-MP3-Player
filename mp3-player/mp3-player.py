@@ -1,5 +1,6 @@
 # Importing Required Modules & libraries
 import tkinter as tk
+from tkinter import *
 import pygame
 import os
 
@@ -39,14 +40,14 @@ class MusicPlayer:
     self.status = tk.StringVar()
 
     # Creates a track frame for song label & status label
-    trackframe = tk.LabelFrame(self.root,text="Song Track",font=("times new roman",15,"bold"),bg="grey",fg="white",bd=5)
+    trackframe = tk.LabelFrame(self.root,text="Song Track",font=("times new roman",15,"bold"),bg="grey",fg="white",bd=5,relief=GROOVE)
     trackframe.place(x=0,y=0,width=600,height=100)
     # Inserts song track label
     songtrack = tk.Label(trackframe,textvariable=self.track,width=20,font=("times new roman",24,"bold"),bg="grey",fg="gold").grid(row=0,column=0,padx=10,pady=5)
     # Inserts status label
     trackstatus = tk.Label(trackframe,textvariable=self.status,font=("times new roman",24,"bold"),bg="grey",fg="gold").grid(row=0,column=1,padx=10,pady=5)
     # creating button frame
-    buttonframe = tk.LabelFrame(self.root,text="Control Panel",font=("times new roman",15,"bold"),bg="grey",fg="white",bd=5)
+    buttonframe = tk.LabelFrame(self.root,text="Control Panel",font=("times new roman",15,"bold"),bg="grey",fg="white",bd=5,relief=GROOVE)
     buttonframe.place(x=0,y=100,width=600,height=100)
 
     # Inserts play button
@@ -59,13 +60,12 @@ class MusicPlayer:
     playbtn = tk.Button(buttonframe,text="STOP",command=self.stopsong,width=6,height=1,font=("times new roman",16,"bold"),fg="navyblue",bg="gold").grid(row=0,column=3,padx=10,pady=5)
 
     # Creates playlist frame
-    songsframe = tk.LabelFrame(self.root,text="Song Playlist",font=("times new roman",15,"bold"),bg="grey",fg="white",bd=5)
+    songsframe = tk.LabelFrame(self.root,text="Song Playlist",font=("times new roman",15,"bold"),bg="grey",fg="white",bd=5,relief=GROOVE)
     songsframe.place(x=600,y=0,width=400,height=200)
     # Inserts scrollbar
-    scrol_y = tk.Scrollbar(songsframe)
-
+    scrol_y = tk.Scrollbar(songsframe,orient=VERTICAL)
     # Inserts playlist listbox
-    self.playlist = tk.Listbox(songsframe,yscrollcommand=scrol_y.set,selectbackground="gold",font=("times new roman",12,"bold"),bg="silver",fg="navyblue",bd=5)
+    self.playlist = tk.Listbox(songsframe,yscrollcommand=scrol_y.set,selectbackground="gold",selectmode=SINGLE,font=("times new roman",12,"bold"),bg="silver",fg="navyblue",bd=5,relief=GROOVE)
     # Applies scrollbar to listbox
     scrol_y.pack(side=RIGHT,fill=Y)
     scrol_y.config(command=self.playlist.yview)
@@ -75,7 +75,7 @@ class MusicPlayer:
     os.chdir("C:\\Users\\Dynamite\\github\\Define-Include-MP3-Player\\mp3-player\\music")
 
     # 6. Set variable "songtracks" to the contents of the music directory
-
+    songtracks = os.listdir(os.getcwd())
 
     # 7. Create a loop that adds each file in the music directory
     #   to self.playlist using .insert(END,track_name)
@@ -90,40 +90,40 @@ class MusicPlayer:
     self.track = self.playlist.get(ACTIVE)
 
     # 8. Set status to "Playing"
-    self.status = tk.StringVar('Playing')
+    self.status.set('Playing')
 
     # 9. Load track to pygame mixer
-    pygame.mixer.music.load(self)
+    pygame.mixer.music.load(self.track)
 
     # 10. Play track using pygame mixer
-    pygame.mixer.music.play(self)
+    pygame.mixer.music.play()
 
   # Defines stop song function
   def stopsong(self):
 
     # 11. Set status to "Stopped"
-    self.status = tk.StringVar('Stopped')
+    self.status.set('Stopped')
 
     # 12. Stop song
-    pygame.mixer.music.stop(self)
+    pygame.mixer.music.stop()
 
   # Defines pause song function
   def pausesong(self):
 
     # 13. Set status to "Paused"
-    self.status = tk.StringVar('Paused')
+    self.status.set('Paused')
 
     # 14. Pause song
-    pygame.mixer.music.pause(self)
+    pygame.mixer.music.pause()
 
   # Defines unpause function
   def unpausesong(self):
 
     # 15. Set status to "Playing"
-    self.status = tk.StringVar('Playing')
+    self.status.set('Playing')
 
     # 16. Unpause music
-    pygame.mixer.music.unpause(self)
+    pygame.mixer.music.unpause()
 
 # Creating TK Container
 root = tk.Tk()
